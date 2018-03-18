@@ -1,0 +1,97 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Calculator
+{
+    public partial class Form1 : Form
+    {
+        Double value = 0;
+        String op = "";
+        bool op_press = false;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void btn1_Click(object sender, EventArgs e)
+        {
+            //Line of code adds a 1 to the textbox that we named "result".
+           // result.Text = "0";
+        }
+
+        //Method below is the generic event handler that we create for all the buttuns to update the result textbox.
+        //We apply it by refferencing it in the Click option of each button you want it to apply.
+        private void btn_Click(object sender, EventArgs e)
+        {
+            if ((result.Text == "0") || (op_press))
+                result.Clear();
+            //Line below resets state of the op_press so you may perform different operations.
+            op_press = false;
+            //The first parameter in the method is an object that represents the button that fired the event that called this method.
+            //eg, if btn1 was pressed, the object would be created for btn1. We need to convert it into a button((give it button properties).
+            Button b = (Button)sender;
+            //result.Text = result.Text +"1"; <--- The harder way of doing it.
+            result.Text = result.Text + b.Text;
+            //The line above should work the same way as : result.Text = result.Text +"1";
+        }
+
+        private void btnCE_Click(object sender, EventArgs e)
+        {
+            //Sets the text in result back to "0"
+            result.Text = "0";
+        }
+
+        private void operator_click(object sender, EventArgs e)
+        {
+            Button b = (Button)sender;
+            op = b.Text;
+            value = Double.Parse(result.Text); //Double.Parse() converts the contents of the following brackets to a double. Necessary as whatever is in result is a string by default.
+            op_press = true;
+            Equation.Text = value + " " + op;
+        }
+
+        private void btnEq_Click(object sender, EventArgs e)
+        {
+            Equation.Text = "";
+            switch(op)
+            {
+                case "+":
+                    result.Text = (value + Double.Parse(result.Text)).ToString();
+                    break;
+
+                case "-":
+                    result.Text = (value - Double.Parse(result.Text)).ToString();
+                    break;
+
+                case "/":
+                    result.Text = (value / Double.Parse(result.Text)).ToString();
+                    break;
+
+                case "*":
+                    result.Text = (value * Double.Parse(result.Text)).ToString();
+                    break;
+
+                default:
+                    break;
+            }
+            
+        }
+
+        private void btnC_Click(object sender, EventArgs e)
+        {
+            //Clears textbox and sets start value back to 0.
+            result.Clear();
+            value = 0;
+        }
+    }
+}
+//We can do what we did for button 1 for each of the buttons or we can create a generic event handler that we can apply to all the
+//methods created to handle the clicks of all the buttons.
